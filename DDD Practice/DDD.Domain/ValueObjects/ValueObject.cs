@@ -32,5 +32,15 @@ namespace DDD.Domain.ValueObjects
         }
 
         protected abstract bool EqualsCore(T other);
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
