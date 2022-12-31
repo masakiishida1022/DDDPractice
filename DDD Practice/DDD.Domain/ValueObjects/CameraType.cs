@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DDD.Domain.ValueObjects
 {
-    public class LensModelId : ValueObject<LensModelId>
+    public class CameraType : ValueObject<CameraType>
     {
         private readonly string name;
 
-
-
-        public LensModelId(string name)
+        public CameraType(string name)
         {
             this.name = name;
         }
 
-        protected override bool EqualsCore(LensModelId other)
+        protected override bool EqualsCore(CameraType other)
         {
             return this.name.Equals(other.name);
         }
