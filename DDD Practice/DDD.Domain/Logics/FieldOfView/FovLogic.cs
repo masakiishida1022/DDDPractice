@@ -11,16 +11,16 @@ namespace DDD.Domain.Logics.FieldOfView
 {
     public static class FovLogic
     {
-        public static double CalcV(double focalLength, double ccdSize, double extension, double thickOfRing)
+        public static double CalcV(double focalLength, double ccdSize, double thickOfRingPlusExtension)
         {
-            return (focalLength * ccdSize) / (extension + thickOfRing);
+            return (focalLength * ccdSize) / thickOfRingPlusExtension;
         }
         
 
-        public static FovPoint CalcFovPoint(double focalLength, double ccdSize, double extension, double thickOfRing, double primaryPosition)
+        public static FovPoint CalcFovPoint(double focalLength, double ccdSize, double thickOfRingPlusExtension, double primaryPosition)
         {
-            double v = CalcV(focalLength, ccdSize, extension, thickOfRing);
-            double wd = v * (focalLength + extension + thickOfRing) / ccdSize - primaryPosition;
+            double v = CalcV(focalLength, ccdSize, thickOfRingPlusExtension);
+            double wd = v * (focalLength + thickOfRingPlusExtension) / ccdSize - primaryPosition;
             return new FovPoint(v, wd);
         }
         

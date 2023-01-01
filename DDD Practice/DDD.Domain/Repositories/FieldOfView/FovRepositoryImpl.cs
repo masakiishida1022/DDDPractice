@@ -7,31 +7,31 @@ using DDD.Domain.ValueObjects;
 
 namespace DDD.Domain.Repositories.FieldOfView
 {
-    class FovRepositoryImpl : IFovRepository
+    public class FovRepositoryImpl : IFovRepository
     {
         public double GetCcdSize(CameraType cameraType)
         {
-            return 0;
+            return 2.304;
         }
 
         public double GetFocalLength(LensType lensType)
         {
-            return 0;
+            return 12.4;
         }
 
         public double GetPrimaryPosition(LensType lensType)
         {
-            return 0;
+            return 29.49+3.84;
         }
 
         public List<double> GetSelectableCloseUpRingThick(CameraType cameraType, LensType lensType)
         {
-            return null;
+            return new List<double>() { 0.5, 3, 4 };
         }
 
         public double GetMaxExtension(LensType lensType)
         {
-            return 0;
+            return 1.2716;
         }
 
     }

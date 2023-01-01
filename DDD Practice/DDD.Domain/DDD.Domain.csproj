@@ -43,8 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="Entities\FieldOfViewEntity.cs" />
-    <Compile Include="Entities\LensEntity.cs" />
     <Compile Include="Logics\FieldOfView\FovLogic.cs" />
     <Compile Include="Entities\FieldOfView\FovPoint.cs" />
     <Compile Include="Entities\FieldOfView\FovSegment.cs" />

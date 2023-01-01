@@ -62,15 +62,15 @@ namespace DDD.Domain.Repositories.FieldOfView
                 //接写リング＋最大繰り出し量よりも一つ上のサイズの接写リングのほうが大きいのであれば、そちらを開始点に選ぶ
                 double ext = (0 < i) ? Math.Min(thickOfRingList[i] + maxExtension, thickOfRingList[i - 1]) : maxExtension;
 
-                var begin = FovLogic.CalcFovPoint(focalPoint, ccdSize, ext, thickOfRingList[i], primaryPos);
-                var end = FovLogic.CalcFovPoint(focalPoint, ccdSize, 0, thickOfRingList[i], primaryPos);
+                var begin = FovLogic.CalcFovPoint(focalPoint, ccdSize, ext, primaryPos);
+                var end = FovLogic.CalcFovPoint(focalPoint, ccdSize, thickOfRingList[i], primaryPos);
                 var fovSegment = new FovSegment(thickOfRingList[i], begin, end);
                 fovSegmentList.Add(fovSegment);
             }
 
             //接写リングをつけないセグメントを追加する。
-            var zeroBegin = FovLogic.CalcFovPoint(focalPoint, ccdSize, 0, thickOfRingList.Last(), primaryPos);
-            var zeroEnd = FovLogic.CalcFovPoint(focalPoint, ccdSize, 0.001, 0, primaryPos);
+            var zeroBegin = FovLogic.CalcFovPoint(focalPoint, ccdSize, thickOfRingList.Last(), primaryPos);
+            var zeroEnd = FovLogic.CalcFovPoint(focalPoint, ccdSize, 0.001, primaryPos);
             fovSegmentList.Add(new FovSegment(0, zeroBegin, zeroEnd));
 
             return true;
