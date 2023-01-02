@@ -62,6 +62,7 @@ namespace DDD_WPF
                 double ratioV = FovCanvas.ActualHeight / Math.Log10(1000);
                 double ratioWd = FovCanvas.ActualWidth / Math.Log10(10000);
 
+                int midPoint = fovPointList.Count / 2;
 
                 for (int i = 0; i < fovPointList.Count - 1; i++)
                 {
@@ -70,15 +71,49 @@ namespace DDD_WPF
                         Stroke = new SolidColorBrush(color),
                         X1 = Math.Log10(fovPointList[i].Wd) * ratioWd,
                         Y1 = FovCanvas.ActualHeight - Math.Log10(fovPointList[i].V) * ratioV,
-                        X2 = Math.Log10(fovPointList[i+1].Wd) * ratioWd,
-                        Y2 = FovCanvas.ActualHeight - Math.Log10(fovPointList[i+1].V) * ratioV
+                        X2 = Math.Log10(fovPointList[i + 1].Wd) * ratioWd,
+                        Y2 = FovCanvas.ActualHeight - Math.Log10(fovPointList[i + 1].V) * ratioV
                     };
 
                     FovCanvas.Children.Add(line);
+
+                    //端に○を書く
+                    Ellipse ellipse = new Ellipse()
+                    {
+                        Stroke = new SolidColorBrush(color),
+                        Fill = new SolidColorBrush(color),
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Width = 3,
+                        Height = 3
+                    };
+
+                    ellipse.SetValue(System.Windows.Controls.Canvas.LeftProperty, line.X1);
+                    ellipse.SetValue(System.Windows.Controls.Canvas.TopProperty, line.Y1);
+                    FovCanvas.Children.Add(ellipse);
+
+
+
+                    if (0.0 < fovSegment.ThicknessOfRing && i == midPoint)
+                    {
+                        Label ringThicknessLabel = new Label
+                        {
+                            //接写リング厚のラベルを描画
+                            FontSize = 12,
+                            Content = fovSegment.ThicknessOfRing.ToString(),
+                        };
+                        ringThicknessLabel.SetValue(System.Windows.Controls.Canvas.LeftProperty, line.X1);
+                        ringThicknessLabel.SetValue(System.Windows.Controls.Canvas.TopProperty, line.Y1);
+                        FovCanvas.Children.Add(ringThicknessLabel);
+                    }
                 }
             }
         }
 
+        private Ellipse MakeEndPoint(int x, int y)
+        {
+
+        }
         private List<FovPoint> DivideToPoints(FovSegment segment, int numPoints)
         {
             var pointList = new List<FovPoint>();
@@ -89,7 +124,7 @@ namespace DDD_WPF
             double vStep = (segment.End.V - segment.Start.V) / (numPoints + 1);
 
          
-
+                
             for (int i = 1; i <= numPoints; i++)
             {
                 var wd = segment.Start.Wd + wdStep * i;

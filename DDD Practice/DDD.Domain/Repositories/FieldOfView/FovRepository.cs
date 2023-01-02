@@ -60,7 +60,7 @@ namespace DDD.Domain.Repositories.FieldOfView
             for (int i = 0; i < thickOfRingList.Count; i++)
             {
                 //接写リング＋最大繰り出し量よりも一つ上のサイズの接写リングのほうが大きいのであれば、そちらを開始点に選ぶ
-                double ext = (0 < i) ? Math.Min(thickOfRingList[i] + maxExtension, thickOfRingList[i - 1]) : maxExtension;
+                double ext = (0 < i) ? Math.Min(thickOfRingList[i] + maxExtension, thickOfRingList[i - 1]) : thickOfRingList[0] + maxExtension;
 
                 var begin = FovLogic.CalcFovPoint(focalPoint, ccdSize, ext, primaryPos);
                 var end = FovLogic.CalcFovPoint(focalPoint, ccdSize, thickOfRingList[i], primaryPos);
