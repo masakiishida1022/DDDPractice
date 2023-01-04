@@ -26,7 +26,7 @@ namespace DDD.Domain.Repositories.FieldOfView
 
         public List<double> GetSelectableCloseUpRingThick(CameraType cameraType, LensType lensType)
         {
-            return new List<double>() { 0.5, 3, 4 };
+            return new List<double>() { 0.5, 3};
         }
 
         public double GetMaxExtension(LensType lensType)

@@ -15,7 +15,7 @@ using Reactive.Bindings;
 
 namespace DDD_WPF.ViewModels
 {
-    public class FovViewModel : INotifyPropertyChanged
+    public class FovChartViewModel : INotifyPropertyChanged
     {
         private FovRepository fovRepository;
 
@@ -27,7 +27,7 @@ namespace DDD_WPF.ViewModels
         public ReactiveProperty<CameraType> CameraType { get; set; }
         public Dictionary<LensType, FovSegment> FovSegmentDic;
 
-        public FovViewModel() : this(new FovRepositoryImpl())
+        public FovChartViewModel() : this(new FovRepositoryImpl())
         {
             CameraType camType = new CameraType("048C");
             LensType lensType = new LensType("CA-HL");
@@ -39,7 +39,7 @@ namespace DDD_WPF.ViewModels
             }
         }
 
-        public FovViewModel(IFovRepository fovRepos)
+        public FovChartViewModel(IFovRepository fovRepos)
         {
             this.fovRepository = new FovRepository(fovRepos);
             InputValue = new ReactiveProperty<string>();
