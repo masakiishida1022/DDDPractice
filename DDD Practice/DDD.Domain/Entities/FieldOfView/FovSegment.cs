@@ -19,5 +19,6 @@ namespace DDD.Domain.Entities.FieldOfView
             this.Start = start;
             this.End = end;
         }
+
     }
 }

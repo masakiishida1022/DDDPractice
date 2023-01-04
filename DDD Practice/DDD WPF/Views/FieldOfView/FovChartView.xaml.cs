@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,15 +27,11 @@ namespace DDD_WPF.Views.FieldOfView
     {
         private readonly FovChartViewModel fovViewModel = new FovChartViewModel();
 
-        private const double MAX_V = 1000;
-        private const double MAX_WD = 10000;
-        private const double MIN_V = 1;
-        private const double MIN_WD = 10;
-
         public FovChartView()
         {
             InitializeComponent();
             this.DataContext = fovViewModel;
+            fovViewModel.Observable.Skip(1).Subscribe(count => Update());
             //DrawFovGraph();
         }
 
@@ -42,6 +39,12 @@ namespace DDD_WPF.Views.FieldOfView
       
         private void canvas1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            fovViewModel.UpdateCounter.Value = 10;
+        }
+
+        private void Update()
+        {
+            this.FovCanvas.Children.Clear();
             this.DrawAxis();
             this.DrawSeries(this.fovViewModel.FovSegmentListDic);
         }

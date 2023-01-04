@@ -22,20 +22,17 @@ namespace DDD_WPF.Views.FieldOfView
             foreach (var fovSegmentListEntry in fovSegmentListDic)
             {
                 var fovSegmentList = fovSegmentListEntry.Value;
-                this.DrawChart(fovSegmentList, Color.FromRgb(0,0,0));
+                this.DrawSeries(fovSegmentList, Color.FromRgb(0,0,0));
             }
         }
 
-        private void DrawChart(List<FovSegment> fovSegmentList, Color color)
+        private void DrawSeries(List<FovSegment> fovSegmentList, Color color)
         {
 
             foreach (var fovSegment in fovSegmentList)
             {
-                int numDivisionPoints = 30;
+                int numDivisionPoints = 4;
                 var fovPointList = this.DivideToPoints(fovSegment, numDivisionPoints);
-
-                double ratioV = FovCanvas.ActualHeight / Math.Log10(1000);
-                double ratioWd = FovCanvas.ActualWidth / Math.Log10(10000);
 
                 int midPoint = fovPointList.Count / 2;
 
@@ -112,30 +109,40 @@ namespace DDD_WPF.Views.FieldOfView
             return ringThicknessLabel;
         }
 
-        private Point ToCanvasPoint(FovPoint fovPoint)
-        {
-            Debug.Assert(1 <= fovPoint.V && 10 <= fovPoint.Wd);
-
-            double ratioV = FovCanvas.ActualHeight / Math.Log10(1000);
-            double ratioWd = FovCanvas.ActualWidth / Math.Log10(10000);
-
-            double v = FovCanvas.ActualHeight - Math.Log10(fovPoint.V)* ratioV;
-            double wd = Math.Log10(fovPoint.Wd)  * ratioWd;
-
-            return new Point(wd, v);
-        }
-
-        
         private List<FovPoint> DivideToPoints(FovSegment segment, int numDivision)
         {
             var pointList = new List<FovPoint>();
 
+            if (MAX_WD < segment.Start.Wd || MAX_V < segment.Start.V)
+            {
+                Debug.Assert(false, "startが範囲外は想定していない");
+                return null;
+            }
+
+            var slope = (segment.End.V - segment.Start.V) / (segment.End.Wd - segment.Start.Wd);
+
+           
+            var endWd = segment.End.Wd;
+            var endV = segment.End.V;
+
+            #region //終端を範囲内に調整する処理
+            if (MAX_WD < endWd)
+            {
+                endWd = MAX_WD;
+                endV = segment.Start.V + (endWd - segment.Start.Wd) * slope;
+            }
+
+            if (MAX_V < endV)
+            {
+                endV = MAX_V;
+                endWd = segment.Start.Wd + (endV - segment.Start.V) / slope;
+            }
+            #endregion //終端を範囲内に調整する処理
+
+            var wdStep = (endWd - segment.Start.Wd) / numDivision;
+            var vStep = (endV - segment.Start.V) / numDivision;
+
             pointList.Add(segment.Start);
-
-            double wdStep = (segment.End.Wd - segment.Start.Wd) / numDivision;
-            double vStep = (segment.End.V - segment.Start.V) / numDivision;
-
-         
                 
             for (int i = 1; i < numDivision; i++)
             {
@@ -143,7 +150,7 @@ namespace DDD_WPF.Views.FieldOfView
                 var v = segment.Start.V + vStep * i;
                 pointList.Add(new FovPoint(v, wd));
             }
-            pointList.Add(segment.End);
+            pointList.Add(new FovPoint(endV, endWd));
 
             return pointList;
         }

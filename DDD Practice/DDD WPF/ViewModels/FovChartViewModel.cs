@@ -24,6 +24,9 @@ namespace DDD_WPF.ViewModels
         public ReactiveProperty<string> InputValue { get; set; }
         public ReactiveProperty<string> OutputValue { get; set; }
 
+        public ReactiveProperty<int> UpdateCounter { get; set; } = new ReactiveProperty<int>(0);
+        public IObservable<int> Observable => UpdateCounter;
+
         public ReactiveProperty<CameraType> CameraType { get; set; }
         public Dictionary<LensType, FovSegment> FovSegmentDic;
 
@@ -86,5 +89,8 @@ namespace DDD_WPF.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+
     }
 }

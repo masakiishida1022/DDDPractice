@@ -77,6 +77,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Views\FieldOfView\FovChartView.axis.cs" />
+    <Compile Include="Views\FieldOfView\FovChartView.common.cs" />
     <Compile Include="Views\FieldOfView\FovChartView.series.cs" />
     <Compile Include="Views\FieldOfView\FovChartView.xaml.cs">
       <DependentUpon>FovChartView.xaml</DependentUpon>

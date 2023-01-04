@@ -10,21 +10,12 @@
 
 
     <UserControl.Resources>
-        <ItemsPanelTemplate x:Key="FovGraphPanelTemplate" />
-        <DataTemplate x:Key="GovGraphItemTemplate" >
-            <Grid>
-            </Grid>
-        </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-         <Canvas Name="FovCanvas" Background="LightCyan" MouseLeftButtonDown="canvas1_MouseLeftButtonDown" Grid.Row="0">
+        <Canvas Name="FovCanvas" Background="LightCyan" MouseLeftButtonDown="canvas1_MouseLeftButtonDown" Grid.Row="0">
             <Canvas.Margin>0,0,0,0</Canvas.Margin>
+            <Canvas.Height>300</Canvas.Height>
+            <Canvas.Width>400</Canvas.Width> 
         </Canvas>
 
 

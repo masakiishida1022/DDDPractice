@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -15,6 +16,7 @@ namespace DDD_WPF.Views.FieldOfView
     {
         private const double ThickOfAxisLine = 0.1;
         private Color _colorOfAxisLine = Color.FromRgb(0, 0, 0);
+        private const int ScaleLabelFontSize = 8;
 
         private void DrawAxis()
         {
@@ -25,11 +27,16 @@ namespace DDD_WPF.Views.FieldOfView
         private void DrawHorizontalAxis()
         {
             var logMaxV = Math.Log10(MAX_V);
-            for (int i = 0; i < (int)logMaxV; i++)
+            for (int i = 0; i <= (int)logMaxV; i++)
             {
                 for (int j = 1; j <= 9; j++)
                 {
                     var v = Math.Pow(10, i) * j;
+
+                    if (MAX_V < v)
+                    {
+                        break;
+                    }
 
                     var vStart = ToCanvasPoint(new FovPoint(v, MIN_WD));
                     var vEnd = ToCanvasPoint(new FovPoint(v, MAX_WD));
@@ -45,6 +52,20 @@ namespace DDD_WPF.Views.FieldOfView
                     };
                     FovCanvas.Children.Add(line);
 
+                    if (j == 1)
+                    {
+                        Label scaleLabel = new Label
+                        {
+                            FontSize = ScaleLabelFontSize,
+                            Content = v.ToString(),
+                            VerticalAlignment = VerticalAlignment.Bottom,
+                            HorizontalAlignment = HorizontalAlignment.Left
+                        };
+                        scaleLabel.SetValue(System.Windows.Controls.Canvas.LeftProperty, vStart.X - 17 - i*2);//-iは桁数が大きいほど左に配置するため
+                        scaleLabel.SetValue(System.Windows.Controls.Canvas.TopProperty, vStart.Y - 12); 
+                        FovCanvas.Children.Add(scaleLabel);
+                    }
+
                 }
             }
 
@@ -54,11 +75,15 @@ namespace DDD_WPF.Views.FieldOfView
         private void DrawVerticalAxis()
         {
             var logMaxWd = Math.Log10(MAX_WD);
-            for (int i = 1; i < logMaxWd; i++)
+            for (int i = 1; i <= logMaxWd; i++)
             {
                 for (int j = 1; j <= 9; j++)
                 {
                     var v = Math.Pow(10, i) * j;
+                    if (MAX_WD < v)
+                    {
+                        break;
+                    }
 
                     var vStart = ToCanvasPoint(new FovPoint(MIN_V, v));
                     var vEnd = ToCanvasPoint(new FovPoint(MAX_V, v));
@@ -74,9 +99,37 @@ namespace DDD_WPF.Views.FieldOfView
                     };
                     FovCanvas.Children.Add(line);
 
+                    if (j == 1)
+                    {
+                        //DrawScaleLabel(new Point(vStart.X - 6, vStart.Y - 6), (int)v);
+                        Label scaleLabel = new Label
+                        {
+                            FontSize = ScaleLabelFontSize,
+                            Content = v.ToString(),
+                            VerticalAlignment = VerticalAlignment.Bottom,
+                            HorizontalAlignment = HorizontalAlignment.Right
+                        };
+                        scaleLabel.SetValue(System.Windows.Controls.Canvas.LeftProperty, vStart.X - 6);
+                        scaleLabel.SetValue(System.Windows.Controls.Canvas.TopProperty, vStart.Y - 6); 
+                        FovCanvas.Children.Add(scaleLabel);
+                    }
+
                 }
             }
 
+        }
+
+        void DrawScaleLabel(Point point, int scale)
+        {
+            Label scaleLabel = new Label
+            {
+                FontSize = 8,
+                Content = scale.ToString(),
+                
+            };
+            scaleLabel.SetValue(System.Windows.Controls.Canvas.LeftProperty, point.X);
+            scaleLabel.SetValue(System.Windows.Controls.Canvas.TopProperty, point.Y);            
+            FovCanvas.Children.Add(scaleLabel);
         }
     }
 }
